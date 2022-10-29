@@ -16,7 +16,7 @@ jobs:
         id: jpgs
       - uses: FedericoCarboni/setup-ffmpeg@v1
         id: setup-ffmpeg
-      - run: ffmpeg -framerate 18 -i *-%03d.jpg -c:v libx264 -crf 28 -vf scale=2028:-1 -an timelapse.mp4
+      - run: ffmpeg -framerate 18 -i -1001404797626-6162-%03d.jpg -c:v libx264 -crf 28 -vf scale=2028:-1 -an timelapse.mp4
       - uses: actions/create-release@v1
         id: create-release
         env:
