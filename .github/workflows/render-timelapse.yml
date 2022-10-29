@@ -8,7 +8,6 @@ jobs:
   timelapse:
     runs-on: ubuntu-latest
     name: Timelapse
-    env:
     steps:
       - uses: actions/checkout@v3
       - run: echo "name=date::$(date +'%Y%m%d')"
