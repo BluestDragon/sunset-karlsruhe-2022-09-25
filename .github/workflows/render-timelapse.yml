@@ -1,0 +1,35 @@
+name: "FFmpeg Timelapse"
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  timelapse:
+    runs-on: ubuntu-latest
+    name: Timelapse
+    env:
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "name=date::$(date +'%Y%m%d')"
+        id: date
+      - run: echo "name=jpgs::$(ls)"
+        id: jpgs
+      - uses: FedericoCarboni/setup-ffmpeg@v1
+        id: setup-ffmpeg
+      - run: ffmpeg -framerate 18 -i *-%03d.jpg -c:v libx264 -crf 28 -vf scale=2028:-1 -an timelapse.mp4
+      - uses: actions/create-release@v1
+        id: create-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: render-${{ steps.date.outputs.date }}
+          release_name: FFmpeg Render: ${{ steps.builds.outputs.jpgs }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: timelapse.mp4
+          asset_name: timelapse.mp4
+          asset_content_type: video/mp4
