@@ -29,6 +29,8 @@ jobs:
       - run: echo "name=jpgs::$(ls)"
         id: jpgs
 
+      - run: mkdir dist
+
       - name: Render with FFmpeg
         uses: FedericoCarboni/setup-ffmpeg@v1
         id: setup-ffmpeg
