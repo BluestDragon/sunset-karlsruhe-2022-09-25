@@ -28,15 +28,18 @@ jobs:
         id: date
       - run: echo "name=jpgs::$(ls)"
         id: jpgs
+
       - name: Render with FFmpeg
-      - uses: FedericoCarboni/setup-ffmpeg@v1
+        uses: FedericoCarboni/setup-ffmpeg@v1
         id: setup-ffmpeg
       - run: ffmpeg -framerate 18 -i -1001404797626-6162-%03d.jpg -c:v libx264 -crf 28 -vf scale=2028:-1 -an ./dist/timelapse.mp4
+
       - name: Expose generated video as artifact
         uses: actions/upload-artifact@v2
         with:
           name: Timelapse
           path: ./dist/timelapse.mp4
+
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
